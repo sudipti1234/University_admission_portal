@@ -5,7 +5,7 @@ data "azurerm_resource_group" "rg" {
 }
 
 resource "azurerm_virtual_network" "vnet" {
-  name                = "${var.rg_name}sud-vnet"
+  name                = "getadmission-vnet"
   location            = var.location
   resource_group_name = data.azurerm_resource_group.rg.name
   address_space       = [var.vnet_cidr]

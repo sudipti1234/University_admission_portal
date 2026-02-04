@@ -40,10 +40,3 @@ variable "kubernetes_version" {
   default     = ""
   description = "Optional. Leave empty to use AKS default, or set a supported version like 1.29.x"
 }
-
-# Pin to a specific Argo CD release for reproducibility
-variable "argocd_install_url" {
-  description = "URL to Argo CD install.yaml"
-  type        = string
-  default     = "https://raw.githubusercontent.com/argoproj/argo-cd/v2.11.3/manifests/install.yaml"
-}
