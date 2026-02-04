@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - College Application Form</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .hero {
+            position: relative;
+            width: 100%;
+            height: calc(100vh - 120px); /* Adjust based on header and footer height */
+            overflow: hidden;
+        }
+
+        .slider {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+        }
+
+        .slides {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            width: 100%;
+        }
+
+        .slide {
+            min-width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center; /* Center slide-content both vertically and horizontally */
+            position: relative;
+        }
+
+        .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Ensures the image covers the entire background without white gaps */
+        }
+
+        .slide-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            text-align: center;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            max-width: 80%; /* Ensure it doesn't overflow */
+        }
+
+        .prev, .next {
+            position: absolute;
+            top: 50%;
+            width: auto;
+            padding: 16px;
+            margin-top: -22px;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+            border: none;
+            cursor: pointer;
+            border-radius: 0 3px 3px 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1;
+        }
+
+        .next {
+            right: 0;
+            border-radius: 3px 0 0 3px;
+        }
+
+        @media (max-width: 800px) {
+            .prev, .next {
+                font-size: 12px;
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body id="home">
+    <header>
+        <nav>
+            <ul>
+                <li><a href="form.html">Admission Form</a></li>
+                <li><a href="aboutUs.html">About Us</a></li>
+                <li><a href="contactUs.html">Contact Us</a></li>
+                <li><a href="programmes.html">Courses Offered</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section class="hero">
+            <div class="slider">
+                <div class="slides">
+                    <div class="slide">
+                        <img src="Clg.jpeg" alt="Campus Image 1">
+                        <div class="slide-content">
+                            <h1>Welcome to Publicis Sapient College</h1>
+                            <p>Join us and be a part of a vibrant community dedicated to academic excellence and holistic development.</p>
+                        </div>
+                    </div>
+                    <div class="slide">
+                        <img src="slide2.jpeg" alt="Campus Image 2">
+                        <div class="slide-content">
+                            <h1>Explore Our Facilities</h1>
+                            <p>State-of-the-art facilities to support your educational journey and personal growth.</p>
+                        </div>
+                    </div>
+                    <div class="slide">
+                        <img src="slider3.jpg" alt="Campus Image 3">
+                        <div class="slide-content">
+                            <h1>Join Our Community</h1>
+                            <p>Become part of a diverse and inclusive community of learners and leaders.</p>
+                        </div>
+                    </div>
+                </div>
+                <button class="prev" onclick="moveSlide(-1)">&#10094;</button>
+                <button class="next" onclick="moveSlide(1)">&#10095;</button>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 College. All rights reserved.</p>
+    </footer>
+    <script>
+        let slideIndex = 0;
+
+        function showSlides() {
+            const slides = document.querySelectorAll('.slide');
+            for (let i = 0; i < slides.length; i++) {
+                slides[i].style.display = 'none';
+            }
+            slideIndex++;
+            if (slideIndex > slides.length) { slideIndex = 1; }
+            slides[slideIndex - 1].style.display = 'flex'; // Use flex to show the slide
+            setTimeout(showSlides, 5000); // Change slide every 5 seconds
+        }
+
+        function moveSlide(n) {
+            slideIndex += n - 1;
+            showSlides();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            showSlides(); // Initialize the slider
+        });
+    </script>
+</body>
+</html>

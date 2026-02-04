@@ -1,0 +1,44 @@
+trigger:
+- azure-devops
+
+variables:
+  imageName: fitness-app
+  acrLoginServer: sudiptiacr.azurecr.io
+  tag: $(Build.BuildId)
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- checkout: self
+  persistCredentials: true
+
+- task: Docker@2
+  displayName: Build and Push Image
+  inputs:
+    command: buildAndPush
+    repository: $(imageName)
+    dockerfile: Dockerfile
+    containerRegistry: suddockerconnection02
+    tags: |
+      $(tag)
+
+- script: |
+    echo "Updating Helm values.yaml"
+
+    sed -i "s/tag:.*/tag: \"$(tag)\"/" charts/fitness-app/values.yaml
+
+    git config user.email "azure-devops@pipeline.com"
+    git config user.name "azure-devops"
+
+    git fetch origin
+    git checkout -B azure-devops origin/azure-devops
+
+    git add charts/fitness-app/values.yaml
+    git commit -m "Update image tag to $(tag)"
+
+    git push https://$GITHUB_PAT@github.com/sudipti1234/Fitness-Tracker-Dynamic-Volumes.git azure-devops
+  displayName: Update Helm values
+  env:
+    GITHUB_PAT: $(GITHUB_PAT)
+

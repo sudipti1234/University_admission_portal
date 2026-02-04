@@ -1,0 +1,67 @@
+namespace: get-admission-ns
+
+get-admission-App:
+  name: get-admission-app
+  replicas: 2
+
+  image:
+    repository: sudiptiacr.azurecr.io/get-admission-app
+    tag: "899"
+
+  containerPort: 5000
+
+  service:
+    name: get-admission-service
+    type: LoadBalancer
+    port: 80
+    targetPort: 5000
+
+  env:
+    MONGODB_URI: mongodb://mongodb-service:27017/studentDB
+    PORT: "5000"
+    HOST: "0.0.0.0"
+    NODE_ENV: production
+
+  datadog:
+    logsSource: nodejs
+    service1: get-admission-service
+    service2: get-admission-app
+    tracePort: "8126"
+    env: production
+    service: get-admission-app
+    version: "1.0.0"
+
+configMap:
+  name: get-admission-configmap
+
+# ✅ PVC only REFERENCES existing StorageClass (does NOT create it)
+get-admission-PVC:
+  name: get-admission-pvc
+  accessMode: ReadWriteMany
+  storageClassName: azurefile-csi
+  size: 10Gi
+
+mongodb:
+  name: mongodb
+  replicas: 2
+
+  image: mongo
+  tag: "899"
+  containerPort: 27017
+
+  service:
+    name: mongodb-service
+    type: ClusterIP
+    port: 27017
+
+  pvc:
+    name: mongodb-pvc
+    accessMode: ReadWriteOnce
+    storageClassName: mongo-persistent-volume
+    size: 20Gi
+
+secret:
+  name: mongodb-secret
+  username: admin
+  password: StrongPassword123!
+

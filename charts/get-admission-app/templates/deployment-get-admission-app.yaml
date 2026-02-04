@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.get-admission-App.name }}
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: {{ .Values.get-admission-App.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.get-admission-App.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.get-admission-App.name }}
+      annotations:
+        ad.datadoghq.com/{{ .Values.get-admission-App.name }}.logs: >-
+          [{"source":"{{ .Values.get-admission-App.datadog.logsSource }}","service":"{{ .Values.get-admission-App.datadog.service1 }}"},
+           {"source":"{{ .Values.get-admission-App.datadog.logsSource }}","service":"{{ .Values.get-admission-App.datadog.service2 }}"}]
+    spec:
+      containers:
+        - name: {{ .Values.get-admission-App.name }}
+          image: "{{ .Values.get-admission-App.image.repository }}:{{ .Values.get-admission-App.image.tag }}"
+          ports:
+            - containerPort: {{ .Values.get-admission-App.containerPort }}
+          env:
+            - name: MONGODB_URI
+              value: "{{ .Values.get-admission-App.env.MONGODB_URI }}"
+            - name: PORT
+              value: "{{ .Values.get-admission-App.env.PORT }}"
+            - name: HOST
+              value: "{{ .Values.get-admission-App.env.HOST }}"
+            - name: NODE_ENV
+              value: "{{ .Values.get-admission-App.env.NODE_ENV }}"
+            - name: DD_AGENT_HOST
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+            - name: DD_TRACE_AGENT_PORT
+              value: "{{ .Values.get-admission-App.datadog.tracePort }}"
+            - name: DD_ENV
+              value: "{{ .Values.get-admission-App.datadog.env }}"
+            - name: DD_SERVICE
+              value: "{{ .Values.get-admission-App.datadog.service }}"
+            - name: DD_VERSION
+              value: "{{ .Values.get-admission-App.datadog.version }}"
+

@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: get-admission-app
+  namespace: argocd
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/sudipti1234/Fitness-Tracker-Dynamic-Volumes.git
+    targetRevision: azure-devops
+    path: charts/get-admission-app
+    helm:
+      valueFiles:
+        - values.yaml
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: get-admission-ns
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
