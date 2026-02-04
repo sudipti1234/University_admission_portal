@@ -5,7 +5,7 @@ get-admission-App:
   replicas: 2
 
   image:
-    repository: sudiptiacr.azurecr.io/get-admission-app
+    repository: getadmission-acr.azurecr.io/get-admission-app
     tag: "899"
 
   containerPort: 5000

@@ -2,8 +2,8 @@ trigger:
 - azure-devops
 
 variables:
-  imageName: fitness-app
-  acrLoginServer: sudiptiacr.azurecr.io
+  imageName: get-admission-app
+  acrLoginServer: getadmission-acr.azurecr.io
   tag: $(Build.BuildId)
 
 pool:
@@ -26,7 +26,7 @@ steps:
 - script: |
     echo "Updating Helm values.yaml"
 
-    sed -i "s/tag:.*/tag: \"$(tag)\"/" charts/fitness-app/values.yaml
+    sed -i "s/tag:.*/tag: \"$(tag)\"/" charts/get-admission-app/values.yaml
 
     git config user.email "azure-devops@pipeline.com"
     git config user.name "azure-devops"
@@ -34,10 +34,10 @@ steps:
     git fetch origin
     git checkout -B azure-devops origin/azure-devops
 
-    git add charts/fitness-app/values.yaml
+    git add charts/get-admission-app/values.yaml
     git commit -m "Update image tag to $(tag)"
 
-    git push https://$GITHUB_PAT@github.com/sudipti1234/Fitness-Tracker-Dynamic-Volumes.git azure-devops
+    git push https://$GITHUB_PAT@github.com/sudipti1234/University_admission_portal.git azure-devops
   displayName: Update Helm values
   env:
     GITHUB_PAT: $(GITHUB_PAT)

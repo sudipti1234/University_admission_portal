@@ -7,7 +7,7 @@ spec:
   project: default
 
   source:
-    repoURL: https://github.com/sudipti1234/Fitness-Tracker-Dynamic-Volumes.git
+    repoURL: https://github.com/sudipti1234/University_admission_portal.git
     targetRevision: azure-devops
     path: charts/get-admission-app
     helm:
