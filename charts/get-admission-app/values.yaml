@@ -8,17 +8,17 @@ getAdmissionApp:
     repository: getadmissionacr.azurecr.io/get-admission-app
     tag: "11241"
 
-  containerPort: 5000
+  containerPort: 3028
 
   service:
     name: get-admission-service
     type: LoadBalancer
     port: 80
-    targetPort: 5000
+    targetPort: 3028
 
   env:
     MONGODB_URI: mongodb://mongodb-service:27017/studentDB
-    PORT: "5000"
+    PORT: "3028"
     HOST: "0.0.0.0"
     NODE_ENV: production
 
