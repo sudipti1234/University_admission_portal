@@ -6,7 +6,7 @@ get-admission-App:
 
   image:
     repository: getadmissionacr.azurecr.io/get-admission-app
-    tag: "11133"
+    tag: "11134"
 
   containerPort: 5000
 
@@ -46,7 +46,7 @@ mongodb:
   replicas: 2
 
   image: mongo
-  tag: "11133"
+  tag: "11134"
   containerPort: 27017
 
   service:
