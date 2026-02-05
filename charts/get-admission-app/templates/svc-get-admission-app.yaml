@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: "{{ .Values.get-admission-App.service.name }}"
+  name: "{{ .Values.getAdmissionApp.service.name }}"
   namespace: "{{ .Values.namespace }}"
 spec:
   selector:
-    app: "{{ .Values.get-admission-App.name }}"
+    app: "{{ .Values.getAdmissionApp.name }}"
   ports:
-    - port: "{{ .Values.get-admission-App.service.port }}"
-      targetPort: "{{ .Values.get-admission-App.service.targetPort }}"
-  type: "{{ .Values.get-admission-App.service.type }}"
+    - port: "{{ .Values.getAdmissionApp.service.port }}"
+      targetPort: "{{ .Values.getAdmissionApp.service.targetPort }}"
+  type: "{{ .Values.getAdmissionApp.service.type }}"
