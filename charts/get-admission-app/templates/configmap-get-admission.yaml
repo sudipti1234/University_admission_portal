@@ -5,6 +5,6 @@ metadata:
   namespace: {{ .Values.namespace }}
 data:
   MONGODB_URI: "{{ .Values.getAdmissionApp.env.MONGODB_URI }}"
-  PORT: {{ .Values.getAdmissionApp.env.PORT }}
+  PORT: "{{ .Values.getAdmissionApp.env.PORT }}"
   HOST: "{{ .Values.getAdmissionApp.env.HOST }}"
   NODE_ENV: "{{ .Values.getAdmissionApp.env.NODE_ENV }}"
