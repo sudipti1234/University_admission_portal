@@ -10,13 +10,20 @@ app.use(bodyParser.json());
 // Serve static files from the 'frontend' directory
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+// ---- FIX 1: align env var name with K8s (MONGODB_URI) and default to your service
+const MONGO_URI =
+  process.env.MONGODB_URI || process.env.MONGO_URL || process.env.DB_URL ||
+  'mongodb://mongodb-service:27017/studentDB';
+
 // Connect to MongoDB
-mongoose.connect(process.env.MONGO_URI || 'mongodb://mongodb:27017/studentDB')
+mongoose.connect(MONGO_URI)
   .then(() => console.log('MongoDB connected'))
   .catch(err => {
     console.error('MongoDB connection error:', err);
     process.exit(1);
   });
+
 
 // Define the Student schema
 const studentSchema = new mongoose.Schema({
@@ -157,7 +164,11 @@ app.get('*', (req, res) => {
 });
 
 // Start the server
-const PORT = 3028;
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+
+/ ---- FIX 2: use PORT from env, default to 5000, and bind to 0.0.0.0
+const PORT = Number(process.env.PORT || 5000);
+const HOST = process.env.HOST || '0.0.0.0';
+
+app.listen(PORT, HOST, () => {
+  console.log(`Server is running on http://${HOST}:${PORT}`);
 });
