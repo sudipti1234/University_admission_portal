@@ -4,7 +4,7 @@ metadata:
   name: {{ .Values.configMap.name }}
   namespace: {{ .Values.namespace }}
 data:
-  MONGODB_URI: "{{ .Values.get-admission-App.env.MONGODB_URI }}"
-  PORT: "{{ .Values.get-admission-App.env.PORT }}"
-  HOST: "{{ .Values.get-admission-App.env.HOST }}"
-  NODE_ENV: "{{ .Values.get-admission-App.env.NODE_ENV }}"
+  MONGODB_URI: "{{ .Values.getAdmissionApp.env.MONGODB_URI }}"
+  PORT: "{{ .Values.getAdmissionApp.env.PORT }}"
+  HOST: "{{ .Values.getAdmissionApp.env.HOST }}"
+  NODE_ENV: "{{ .Values.getAdmissionApp.env.NODE_ENV }}"
