@@ -46,7 +46,6 @@ mongodb:
   replicas: 2
 
   image: mongo
-  tag: "11195"
   containerPort: 27017
 
   service:
