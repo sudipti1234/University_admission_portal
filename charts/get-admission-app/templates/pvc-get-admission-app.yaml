@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{ .Values.get-admission-PVC.name }}
+  name: {{ .Values.getAdmissionPVC.name }}
   namespace: {{ .Values.namespace }}
 spec:
   accessModes:
-    - {{ .Values.get-admission-PVC.accessMode }}
-  storageClassName: {{ .Values.get-admission-PVC.storageClassName }}
+    - {{ .Values.getAdmissionPVC.accessMode }}
+  storageClassName: {{ .Values.getAdmissionPVC.storageClassName }}
   resources:
     requests:
-      storage: {{ .Values.get-admission-PVC.size }}
+      storage: {{ .Values.getAdmissionPVC.size }}
