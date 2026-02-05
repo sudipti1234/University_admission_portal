@@ -6,7 +6,7 @@ getAdmissionApp:
 
   image:
     repository: getadmissionacr.azurecr.io/get-admission-app
-    tag: "11236"
+    tag: "11237"
 
   containerPort: 5000
 
