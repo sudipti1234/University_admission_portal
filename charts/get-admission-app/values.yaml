@@ -35,7 +35,7 @@ configMap:
   name: get-admission-configmap
 
 # ✅ PVC only REFERENCES existing StorageClass (does NOT create it)
-get-admission-PVC:
+getAdmissionPVC:
   name: get-admission-pvc
   accessMode: ReadWriteMany
   storageClassName: azurefile-csi
