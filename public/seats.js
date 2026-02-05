@@ -1,36 +1,28 @@
 // seats.js
 document.addEventListener('DOMContentLoaded', () => {
-  // Static element present on the page
-  const programmeEl = document.getElementById('programme');
+  // Optional UI elements (ok if missing)
+  const seatInfoEl = document.getElementById('seatInfo');
+  const submitBtn  = document.getElementById('submitBtn');
 
-  // Optional UI hooks (if missing, we degrade gracefully)
-  const seatInfoEl  = document.getElementById('seatInfo');
-  const submitBtn   = document.getElementById('submitBtn');
-
-  // If #programme isn't on this page, skip to avoid "addEventListener on null"
-  if (!programmeEl) {
-    console.warn('[seats.js] #programme not found; skipping seat availability logic.');
-    return;
-  }
-
-  // Helpers for UI
-  const setSeatInfo = (msg) => {
-    if (seatInfoEl) seatInfoEl.textContent = msg;
-    else            console.log('[SeatInfo]', msg);
+  // Helpers
+  const setSeatInfo = (msg, type = 'info') => {
+    if (seatInfoEl) {
+      seatInfoEl.textContent = msg;
+      seatInfoEl.dataset.type = type; // style via [data-type] if you want
+    } else {
+      console.log(`[SeatInfo/${type}]`, msg);
+    }
   };
-
   const setSubmitEnabled = (enabled) => {
     if (submitBtn) submitBtn.disabled = !enabled;
   };
 
-  // Call backend for availability
   async function fetchAvailableSeats(programme, stream) {
     try {
-      // NOTE: proper '&' and encoded values; no 'localhost' → relative path hits the same host (AKS LB)
       const url = `/api/seats?programme=${encodeURIComponent(programme)}&stream=${encodeURIComponent(stream)}`;
       const res = await fetch(url, { method: 'GET' });
       if (!res.ok) {
-        // 400 is expected for invalid keys / no seats; surface message if present
+        // typical 400 for invalid keys/no seats
         const err = await res.json().catch(() => ({}));
         throw new Error(err?.message || `HTTP ${res.status}`);
       }
@@ -38,12 +30,11 @@ document.addEventListener('DOMContentLoaded', () => {
       const n = Number(data?.availableSeats);
       return Number.isFinite(n) ? n : 0;
     } catch (e) {
-      console.error('[seats.js] Error fetching seat availability:', e);
+      console.error('[seats.js] fetch /api/seats failed:', e);
       return 0;
     }
   }
 
-  // Update UI based on availability (guard against missing selections)
   async function updateSeatAvailability(programme, stream) {
     if (!programme) {
       setSeatInfo('Select a programme to view available seats.');
@@ -58,37 +49,43 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const available = await fetchAvailableSeats(programme, stream);
     if (available > 0) {
-      setSeatInfo(`Seats available: ${available}`);
+      setSeatInfo(`Seats available: ${available}`, 'ok');
       setSubmitEnabled(true);
     } else {
-      setSeatInfo(`No seats available for ${stream}. Please select another stream.`);
+      setSeatInfo(`No seats available for ${stream}. Please select another stream.`, 'warn');
       setSubmitEnabled(false);
     }
   }
 
-  // When programme changes:
-  // - your other script renders #stream dynamically
-  // - we still attempt an update (will prompt to pick a stream if none)
-  programmeEl.addEventListener('change', () => {
-    const streamEl = document.getElementById('stream'); // might not exist yet
-    updateSeatAvailability(programmeEl.value, streamEl?.value || '');
-  });
-
-  // Because #stream is created dynamically, use event delegation:
+  // Document-level delegation: handles both #programme and (dynamically created) #stream
   document.addEventListener('change', (e) => {
-    if (e.target && e.target.id === 'stream') {
-      const currentProgramme = programmeEl.value || '';
-      const currentStream    = e.target.value || '';
-      updateSeatAvailability(currentProgramme, currentStream);
+    const target = e.target;
+    if (!target) return;
+
+    // If programme changed, prompt to choose stream (or compute if stream already exists)
+    if (target.id === 'programme') {
+      const programme = target.value || '';
+      const streamEl  = document.getElementById('stream'); // may not exist yet
+      const stream    = streamEl?.value || '';
+      if (!stream) setSeatInfo('Select a stream to view available seats.');
+      updateSeatAvailability(programme, stream);
+    }
+
+    // If stream changed, compute with the current programme (which should exist as a select)
+    if (target.id === 'stream') {
+      const programmeEl = document.getElementById('programme'); // should be static
+      const programme   = programmeEl?.value || '';
+      const stream      = target.value || '';
+      updateSeatAvailability(programme, stream);
     }
   });
 
-  // If both were pre-filled (e.g., browser restore), compute once on load
-  const initialStream = document.getElementById('stream')?.value || '';
-  if (programmeEl.value && initialStream) {
-    updateSeatAvailability(programmeEl.value, initialStream);
+  // Initial hint / initial compute if both already present (e.g., browser restores values)
+  const programmeInit = document.getElementById('programme')?.value || '';
+  const streamInit    = document.getElementById('stream')?.value || '';
+  if (programmeInit && streamInit) {
+    updateSeatAvailability(programmeInit, streamInit);
   } else {
-    // Friendly hint at startup
     setSeatInfo('Select programme and stream to see available seats.');
     setSubmitEnabled(false);
   }
