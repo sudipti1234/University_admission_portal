@@ -24,21 +24,35 @@ steps:
       $(tag)
 
 - script: |
-    echo "Updating Helm values.yaml"
+    set -euxo pipefail
+    echo "Updating ONLY getAdmissionApp.image.tag in values.yaml to $(tag)"
 
-    sed -i "s/tag:.*/tag: \"$(tag)\"/" charts/get-admission-app/values.yaml
+    # Update only the tag under getAdmissionApp -> image -> tag
+    # Range: from line starting with 'getAdmissionApp:' to the first line '  image:'
+    # Then replace the first '  tag:' found in that range.
+    sed -i '/^getAdmissionApp:/,/^  image:/{/^ *tag:/s//  tag: "'$(tag)'"/}' charts/get-admission-app/values.yaml
+
+    echo "Showing diff for values.yaml"
+    git --no-pager diff -- charts/get-admission-app/values.yaml || true
 
     git config user.email "azure-devops@pipeline.com"
     git config user.name "azure-devops"
 
     git fetch origin
-    git checkout -B azure-devops origin/azure-devops
+    git checkout -B azure-devops origin/azure-devops || git checkout -B azure-devops
+
+    # Commit only if there are changes
+    if git diff --quiet -- charts/get-admission-app/values.yaml; then
+      echo "No changes to commit."
+      exit 0
+    fi
 
     git add charts/get-admission-app/values.yaml
-    git commit -m "Update image tag to $(tag)"
+    git commit -m "Update app image tag to $(tag)"
 
-    git push https://$GITHUB_PAT@github.com/sudipti1234/University_admission_portal.git azure-devops
-  displayName: Update Helm values
+    # Use tokenized origin to avoid interactive auth
+    git remote set-url origin "https://x-access-token:${GITHUB_PAT}@github.com/sudipti1234/University_admission_portal.git"
+    git push origin azure-devops
+  displayName: Update ONLY app image tag
   env:
     GITHUB_PAT: $(GITHUB_PAT)
-
