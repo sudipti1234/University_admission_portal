@@ -24,6 +24,14 @@ spec:
           env:
             - name: MONGODB_URI
               value: "{{ .Values.getAdmissionApp.env.MONGODB_URI }}"
+            - name: MONGO_URI
+              value: "{{ .Values.getAdmissionApp.env.MONGODB_URI }}"
+            # Defensive aliases (some libs use these)
+            - name: MONGO_URL
+              value: "{{ .Values.getAdmissionApp.env.MONGODB_URI }}"
+            - name: DB_URL
+              value: "{{ .Values.getAdmissionApp.env.MONGODB_URI }}"
+
             - name: PORT
               value: "{{ .Values.getAdmissionApp.env.PORT }}"
             - name: HOST
