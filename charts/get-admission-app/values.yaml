@@ -1,6 +1,6 @@
 namespace: get-admission-ns
 
-get-admission-App:
+getAdmissionApp:
   name: get-admission-app
   replicas: 3
 
