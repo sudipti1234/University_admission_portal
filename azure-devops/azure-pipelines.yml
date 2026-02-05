@@ -3,7 +3,7 @@ trigger:
 
 variables:
   imageName: get-admission-app
-  acrLoginServer: getadmissionAcr.azurecr.io
+  acrLoginServer: getadmissionacr.azurecr.io
   tag: $(Build.BuildId)
 
 pool:
