@@ -3,7 +3,7 @@ trigger:
 
 variables:
   imageName: get-admission-app
-  acrLoginServer: getadmission-acr.azurecr.io
+  acrLoginServer: getadmissionAcr.azurecr.io
   tag: $(Build.BuildId)
 
 pool:
@@ -19,7 +19,7 @@ steps:
     command: buildAndPush
     repository: $(imageName)
     dockerfile: Dockerfile
-    containerRegistry: suddockerconnection02
+    containerRegistry: get-admission-app-ACR
     tags: |
       $(tag)
 
