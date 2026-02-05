@@ -6,7 +6,115 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Admission Form</title>
   <link rel="stylesheet" href="styles.css" />
+  <style><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0" />
+  <title>Student Application</title>
+  <link rel="stylesheet" href="styles.css" />
   <style>
+    .section{padding:16px;margin:12px;background:#fff;border-radius:8px;box-shadow:0 2px 6px rgba(0,0,0,.06)}
+    .row{display:flex;gap:12px;flex-wrap:wrap}
+    .row>label{flex:1 1 240px;display:flex;flex-direction:column}
+    #educationalDetails{display:none}
+    #seatInfo{font-weight:600}
+    button{background:#c01e1e;color:#fff;border:0;padding:10px 16px;border-radius:6px;cursor:pointer}
+    button[disabled]{opacity:.5;cursor:not-allowed}
+    header, footer {background:#c01e1e;color:#fff;padding:10px}
+    nav ul{display:flex;gap:16px;list-style:none;margin:0;padding:0}
+    nav a{color:#fff;text-decoration:none}
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="aboutUs.html">About Us</a></li>
+        <li><a href="contactUs.html">Contact Us</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <h1 style="padding-left:16px">Admission Form</h1>
+
+    <form id="studentForm" class="section">
+      <div class="row">
+        <label>Application Date
+          <input type="date" id="applicationDate" required />
+        </label>
+        <label>First Name
+          <input id="firstName" required />
+        </label>
+        <label>Last Name
+          <input id="lastName" required />
+        </label>
+        <label>Gender
+          <select id="gender" required>
+            <option value="">--</option>
+            <option>Male</option><option>Female</option><option>Other</option>
+          </select>
+        </label>
+        <label>DOB
+          <input type="date" id="dob" required />
+        </label>
+        <label>Father's Name
+          <input id="fatherName" required />
+        </label>
+        <label>Phone Number
+          <input id="phoneNumber" required />
+        </label>
+        <label>Email
+          <input type="email" id="emailAddress" required />
+        </label>
+        <label>Permanent Address
+          <input id="permanentAddress" required />
+        </label>
+        <label>Present Address
+          <input id="presentAddress" required />
+        </label>
+      </div>
+
+      <div class="row">
+        <label>Programme
+          <select id="programme" required>
+            <option value="">Select Programme</option>
+            <option value="btech">B.Tech</option>
+            <option value="mtech">M.Tech</option>
+            <option value="mba">MBA</option>
+          </select>
+        </label>
+
+        <label>
+          <span>Seat status:</span>
+          <span id="seatInfo">Select programme and stream to see available seats.</span>
+        </label>
+      </div>
+
+      <div id="educationalDetails" class="section">
+        <h3>Educational Details</h3>
+        <div id="educationFields"></div>
+      </div>
+
+      <div class="row" style="justify-content:flex-start">
+        <button type="button" id="validatePersonalDetails">Validate Personal Details</button>
+        <button type="submit" id="submitBtn" disabled>Submit Application</button>
+      </div>
+    </form>
+  </main>
+
+  <footer><p>© 2024 College. All rights reserved.</p></footer>
+
+  <!-- Load scripts with cache-busters to avoid old cached copies -->
+  <script src="script.js?v=20260205"></script>
+  <script src="seats.js?v=20260205"></script>
+</body>
+</html>
+``
     .section{padding:16px;margin:12px;background:#fff;border-radius:8px;box-shadow:0 2px 6px rgba(0,0,0,.06)}
     .row{display:flex;gap:12px;flex-wrap:wrap}
     .row>label{flex:1 1 240px;display:flex;flex-direction:column}
