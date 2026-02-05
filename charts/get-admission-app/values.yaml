@@ -2,7 +2,7 @@ namespace: get-admission-ns
 
 get-admission-App:
   name: get-admission-app
-  replicas: 2
+  replicas: 3
 
   image:
     repository: getadmissionacr.azurecr.io/get-admission-app
