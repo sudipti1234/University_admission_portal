@@ -35,7 +35,7 @@ provider "azurerm" {
  */
 
 provider "kubernetes" {
-    config_path="C:/Users/SudiptiPatnaha/.kube/config"
+  config_path = "C:/Users/SudiptiPatnaha/.kube/config"
 }
 
 
